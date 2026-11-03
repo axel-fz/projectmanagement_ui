@@ -1,26 +1,137 @@
 @import "tailwindcss";
 
+@theme {
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --primary: #534AB7;
+  --primary-hover: #3C3489;
+  --primary-tint: #EEEDFE;
+  --bg: #F8F8F6;
+  --surface: #FFFFFF;
+  --surface-hover: #F6F6F4;
+  --border: #E5E4DE;
+  --text: #1F1F1D;
+  --muted: #6B6A64;
+  --danger: #A32D2D;
+  --success-bg: #EAF3DE;
+  --success-text: #27500A;
+  --info-bg: #E6F1FB;
+  --info-text: #0C447C;
+  --warning-bg: #FAEEDA;
+  --warning-text: #633806;
+  --danger-bg: #FCEBEB;
+  --danger-text: #791F1F;
+  --neutral-bg: #F1EFE8;
+  --neutral-text: #444441;
+
+  --card-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
+  --card-shadow-hover: 0 4px 12px 0 rgba(0, 0, 0, 0.08);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+.dark {
+  --primary: #7F77DD;
+  --primary-hover: #AFA9EC;
+  --primary-tint: #26215C;
+  --bg: #121214;
+  --surface: #1C1C1F;
+  --surface-hover: #242428;
+  --border: #2E2E33;
+  --text: #EDEDEA;
+  --muted: #A1A09A;
+  --danger: #F09595;
+  --success-bg: #27500A;
+  --success-text: #C0DD97;
+  --info-bg: #0C447C;
+  --info-text: #B5D4F4;
+  --warning-bg: #633806;
+  --warning-text: #FAC775;
+  --danger-bg: #791F1F;
+  --danger-text: #F7C1C1;
+  --neutral-bg: #444441;
+  --neutral-text: #D3D1C7;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --card-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.35), 0 1px 2px -1px rgba(0, 0, 0, 0.25);
+  --card-shadow-hover: 0 6px 16px -2px rgba(0, 0, 0, 0.5);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11", "tnum";
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.011em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Solid Clean Card Panels (Glassmorphism removed) */
+.glass-panel {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--card-shadow);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-panel-interactive {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--card-shadow);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-panel-interactive:hover {
+  background-color: var(--surface-hover);
+  border-color: rgba(127, 119, 221, 0.4);
+  box-shadow: var(--card-shadow-hover);
+}
+
+.glass-input {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.glass-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px var(--primary-tint);
+}
+
+/* Smooth custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(150, 150, 160, 0.25);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(150, 150, 160, 0.45);
+}
+
+/* Accent glowing utilities */
+.glow-primary {
+  box-shadow: 0 0 16px -2px rgba(127, 119, 221, 0.35);
+}
+
+.glow-cyan {
+  box-shadow: 0 0 16px -2px rgba(56, 189, 248, 0.35);
+}
+
+.glow-emerald {
+  box-shadow: 0 0 16px -2px rgba(45, 212, 191, 0.35);
 }

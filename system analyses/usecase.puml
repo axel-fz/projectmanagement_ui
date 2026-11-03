@@ -1,0 +1,46 @@
+@startuml NexaFlow_UseCases
+left to right direction
+skinparam shadowing false
+skinparam usecase {
+  BackgroundColor<<core>> #EEEDFE
+  BorderColor<<core>> #534AB7
+  BackgroundColor<<support>> #E1F5EE
+  BorderColor<<support>> #0F6E56
+}
+
+actor "Team member" as U
+
+rectangle "NexaFlow frontend" {
+  usecase "View dashboard" as UC_DASH <<core>>
+  usecase "Browse projects" as UC_BROWSE <<core>>
+  usecase "Create project" as UC_PCREATE <<core>>
+  usecase "Edit project" as UC_PEDIT <<core>>
+  usecase "Delete project" as UC_PDELETE <<core>>
+  usecase "View tasks" as UC_TVIEW <<core>>
+  usecase "Create task" as UC_TCREATE <<core>>
+  usecase "Edit task, change status" as UC_TEDIT <<core>>
+  usecase "Delete task" as UC_TDELETE <<core>>
+
+  usecase "View progress chart" as UC_CHART <<support>>
+  usecase "Search, filter, sort" as UC_SEARCH <<support>>
+  usecase "Validate form" as UC_VALIDATE <<support>>
+  usecase "Confirm deletion" as UC_CONFIRM <<support>>
+}
+
+U --> UC_DASH
+U --> UC_BROWSE
+U --> UC_PCREATE
+U --> UC_PEDIT
+U --> UC_PDELETE
+U --> UC_TVIEW
+U --> UC_TCREATE
+U --> UC_TEDIT
+U --> UC_TDELETE
+
+UC_DASH .> UC_CHART : <<include>>
+UC_SEARCH .> UC_BROWSE : <<extend>>
+UC_PCREATE .> UC_VALIDATE : <<include>>
+UC_PEDIT .> UC_VALIDATE : <<include>>
+UC_PDELETE .> UC_CONFIRM : <<include>>
+UC_TDELETE .> UC_CONFIRM : <<include>>
+@enduml

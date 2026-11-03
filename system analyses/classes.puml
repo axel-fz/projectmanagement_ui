@@ -1,0 +1,152 @@
+@startuml NexaFlow_Classes
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam class {
+  BackgroundColor #EEEDFE
+  BorderColor #534AB7
+}
+
+' ---------- Domain ----------
+enum ProjectStatus {
+  IN_PROGRESS
+  COMPLETED
+  PENDING
+}
+
+enum TaskStatus {
+  TODO
+  IN_PROGRESS
+  DONE
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+class Manager {
+  +id: string
+  +name: string
+  +avatarUrl: string
+}
+
+class Project {
+  +id: string
+  +name: string
+  +description: string
+  +manager: Manager
+  +deadline: string
+  +status: ProjectStatus
+  +progress: number
+  +color: string
+  +createdAt: string
+}
+
+class Task {
+  +id: string
+  +title: string
+  +priority: Priority
+  +status: TaskStatus
+  +deadline: string
+  +projectId: string
+}
+
+' ---------- State and logic ----------
+class AppProvider <<context>> {
+  +projects: Project[]
+  +tasks: Task[]
+  +addProject(data)
+  +updateProject(id, data)
+  +deleteProject(id)
+  +addTask(data)
+  +updateTask(id, data)
+  +deleteTask(id)
+}
+
+class ProjectFilters {
+  +query: string
+  +status: ProjectStatus
+  +sortBy: string
+  +apply(projects): Project[]
+}
+
+class DashboardStats {
+  +activeProjects: number
+  +completedTasks: number
+  +overdueTasks: number
+  {static} +compute(projects, tasks): DashboardStats
+}
+
+' ---------- UI ----------
+class DashboardPage
+class ProjectsPage
+class TasksPage
+
+class ProjectCard {
+  +project: Project
+  +onEdit()
+  +onDelete()
+}
+
+class TaskRow {
+  +task: Task
+  +onStatusChange()
+  +onEdit()
+  +onDelete()
+}
+
+class ProjectFormModal {
+  +project: Project
+  +mode: string
+  +validate(): boolean
+  +onSubmit()
+}
+
+class TaskFormModal {
+  +task: Task
+  +mode: string
+  +validate(): boolean
+  +onSubmit()
+}
+
+class ConfirmDialog {
+  +message: string
+  +onConfirm()
+  +onCancel()
+}
+
+class Toast {
+  +message: string
+  +show()
+}
+
+' ---------- Relationships ----------
+Project --> Manager : managed by
+Project "1" --> "*" Task : contains\n(cascade delete)
+Project --> ProjectStatus
+Task --> TaskStatus
+Task --> Priority
+
+AppProvider o-- Project
+AppProvider o-- Task
+AppProvider ..> Toast : notifies
+
+DashboardStats ..> AppProvider : derived from
+ProjectFilters ..> Project : filters
+
+DashboardPage ..> DashboardStats
+DashboardPage ..> AppProvider
+ProjectsPage ..> ProjectFilters
+ProjectsPage ..> AppProvider
+ProjectsPage *-- ProjectCard
+ProjectsPage *-- ProjectFormModal
+ProjectsPage ..> ConfirmDialog
+TasksPage ..> AppProvider
+TasksPage *-- TaskRow
+TasksPage *-- TaskFormModal
+TasksPage ..> ConfirmDialog
+
+ProjectFormModal ..> AppProvider : add or update
+TaskFormModal ..> AppProvider : add or update
+@enduml
